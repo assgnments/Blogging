@@ -45,6 +45,35 @@ class Post extends Equatable implements Model {
     );
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      '_id': id,
+      'image': image,
+      'caption': caption,
+      'created_at': createdAt?.toIso8601String(),
+      'likes': likes,
+      'comments': comments,
+      'isLiked': isLiked,
+      'user': user?.toMap(),
+    };
+  }
+
+  static Post fromMap(Map<String, dynamic> map) {
+    if (map == null) return null;
+
+    return Post(
+      id: map['_id'],
+      caption: map['caption'],
+      image: '${ImageUrl.baseImageUrl}${map['image']}',
+      createdAt:
+          map['created_at'] != null ? DateTime.parse(map['created_at']) : null,
+      likes: map['likes'],
+      comments: map['comments'],
+      isLiked: map['isLiked'],
+      user: map['user'] != null ? User.fromMap(map['user']) : null,
+    );
+  }
+
   @override
   List<Object> get props => [
         id,
